@@ -3,6 +3,11 @@
 This GHC plugin allows compilation to abort with an
 error if any non-whitelisted extension, or import is used.
 
+This is meant to be used on a Haskell course where student answers
+go through an automatic inspection before grading. The aim of the
+plugin is to stop the most obvious cheating attempts, such as
+passing easy recursion exercises by just import `Data.List`.
+
 # Usage
 
 This is a ghc plugin. The general pattern of usage is to
@@ -24,3 +29,5 @@ whitelisting of extensions and modules and checking that the
 source file nor any of it's transitive imports does not contain
 the string `OPTIONS_GHC` (or any upper/lowercase permutation of
 it).
+
+
