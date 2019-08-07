@@ -8,5 +8,5 @@ import A
 y=15
 
 class Foo a where
-    type K  :: *
+    type K a :: *
     f :: K a -> a

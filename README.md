@@ -18,7 +18,17 @@ This is a ghc plugin. The general pattern of usage is to
 
          ghc -- -Wall -fplugin=AbortPlugin -fplugin-opt=AbortPlugin:Limitations.dhall YourFile.hs    
 
-# Limitations
+# Building limitation specifications
+
+You can also use this plugin to extract the extensions and imports used by a 
+particular source file. This is done by prefixing the limitations filename
+by `+`-sign. For example:
+
+         ghc -- -Wall -fplugin=AbortPlugin -fplugin-opt=AbortPlugin:+Limitations.dhall YourFile.hs    
+
+This will overwrite the limitations file if it exists.
+
+# Caveat Emptor
 
 This does **not** provide compilation safety! GHC allows options
 such as `-F -pgmF ./something_nasty` which cannot be intercepted by
