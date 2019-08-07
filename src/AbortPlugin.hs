@@ -8,8 +8,6 @@ where
 import           Control.Monad
 import           Control.Monad.IO.Class
 
-import           GHC.Generics
-
 import qualified EnumSet                       as S
 import           GhcPlugins              hiding ( errorMsg
                                                 , (<>)
@@ -25,11 +23,7 @@ import qualified Dhall
 import qualified Data.Text
 import qualified Dhall.Pretty
 
--- <# Limitations data type#>
-data Limitations = Limitations
-        { extensions :: [Data.Text.Text]
-        , imports    :: [Data.Text.Text]}
-        deriving (Generic,Dhall.Interpret, Dhall.Inject, Show)
+import AbortPlugin.Limitations
 
 -- <# Main #>
 plugin :: Plugin
@@ -41,7 +35,7 @@ plugin = defaultPlugin
           let importsUsed = getImports modSummary
           extensionsUsed <- getExtensions
           let limitations = Limitations
-                { AbortPlugin.extensions = map (Data.Text.pack . show)
+                { AbortPlugin.Limitations.extensions = map (Data.Text.pack . show)
                                                extensionsUsed
                 , imports = fmap (Data.Text.pack . moduleNameString . unLoc)
                                  importsUsed
@@ -60,7 +54,7 @@ plugin = defaultPlugin
             (fmap Data.Text.unpack (imports limitations))
             modSummary
           extensionErrors <- checkExts
-            (fmap Data.Text.unpack (AbortPlugin.extensions limitations))
+            (fmap Data.Text.unpack (AbortPlugin.Limitations.extensions limitations))
             parsedModule
           unless (null extensionErrors && null importErrors) $ liftIO
             (throw
